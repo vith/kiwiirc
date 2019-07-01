@@ -4,9 +4,10 @@ const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
 const StyleLintPlugin = require('stylelint-webpack-plugin');
+const pkgDir = require('pkg-dir')
 
-function resolve (dir) {
-  return path.join(__dirname, '..', dir)
+function resolve(...dir) {
+  return path.join(pkgDir.sync(), ...dir)
 }
 
 const createLintingRule = () => ({
@@ -25,8 +26,6 @@ module.exports = {
   entry: {
     app: [
         'core-js/fn/promise', // required by the webpack runtime for async import(). babel polyfills don't help us here. ie11
-        'core-js/fn/array/virtual/find-index', // required for vue-virtual-scroller & ie11
-        'core-js/fn/array/virtual/includes', // required for vue-virtual-scroller & ie11
         './src/main.js'
     ]
   },
@@ -68,8 +67,9 @@ module.exports = {
         include: [
             resolve('src'),
             resolve('test'),
-            resolve('node_modules/ip-regex'),
-            resolve('node_modules/webpack-dev-server/client')
+            require.resolve('ip-regex'),
+            require.resolve('webpack-dev-server/client'),
+            require.resolve('vue-virtual-scroller'),
         ]
       },
       {
