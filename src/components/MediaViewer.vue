@@ -13,6 +13,7 @@
                 v-if="isIframe"
                 :src="url"
                 class="kiwi-mediaviewer-iframe"
+                @load="iframeLoaded"
             />
             <component v-else-if="component" :is="component"/>
             <a
@@ -90,6 +91,9 @@ export default {
         },
         closeViewer: function closeViewer() {
             state.$emit('mediaviewer.hide', { source: 'user' });
+        },
+        iframeLoaded() {
+            state.$emit('mediaviewer.iframe.load', { url: this.url });
         },
     },
 };
